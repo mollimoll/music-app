@@ -43,6 +43,7 @@ export const LoginScreen = ({ navigation }) => {
     if (response?.type === "success") {
       const { access_token } = response.params
       console.log("code", access_token)
+      navigation.navigate("Search", { authToken: access_token })
     }
   }, [response])
 
@@ -52,7 +53,7 @@ export const LoginScreen = ({ navigation }) => {
         disabled={!request}
         title='Login'
         onPress={() => {
-          promptAsync().then(navigation.navigate("Search"))
+          promptAsync()
         }}
       />
     </SafeAreaView>

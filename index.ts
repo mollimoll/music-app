@@ -117,7 +117,6 @@ export const getNewReleases = async (req: getNewReleasesRequest) => {
     country: req.query.country,
   })
 
-  console.log("issue here", items.length)
   return items
 }
 

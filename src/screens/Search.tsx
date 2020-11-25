@@ -21,56 +21,34 @@ const discovery = {
   tokenEndpoint: "https://accounts.spotify.com/api/token",
 }
 
-export const SearchScreen = () => {
+type Props = {
+  route: {
+    params: {
+      authToken: string
+    }
+  }
+}
+
+export const SearchScreen = ({ route }: Props) => {
+  const { authToken } = route.params
   const [results, setResults] = useState(undefined as any)
-  const [request, response, promptAsync] = useAuthRequest(
-    {
-      responseType: ResponseType.Token,
-      clientId,
-      scopes: ["user-read-email", "playlist-modify-public"],
-      // In order to follow the "Authorization Code Flow" to fetch token after authorizationEndpoint
-      // this must be set to false
-      usePKCE: false,
-      // For usage in managed apps using the proxy
-      redirectUri: makeRedirectUri({
-        // For usage in bare and standalone
-        native: "exp://192.168.2.8:19000",
-      }),
-    },
-    discovery
-  )
 
   const fetchNewReleases = async () => {
-    if (response?.type === "success") {
-      const { access_token } = response.params
+    if (authToken) {
       const newReleases = await getNewReleases({
         query: { country: "us" },
-        auth_token: access_token,
+        auth_token: authToken,
       })
       setResults(newReleases)
     }
   }
 
-  useEffect(() => {
-    if (response?.type === "success") {
-      const { access_token } = response.params
-      console.log("code", access_token)
-    }
-  }, [response])
-
   return (
     <SafeAreaView style={styles.container}>
       <Button
-        disabled={!response}
+        disabled={!authToken}
         title='Fetch New Releases'
         onPress={async () => await fetchNewReleases()}
-      />
-      <Button
-        disabled={!request}
-        title='Login'
-        onPress={() => {
-          promptAsync()
-        }}
       />
       {results && (
         <FlatList
