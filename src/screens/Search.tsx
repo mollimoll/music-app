@@ -21,7 +21,7 @@ const discovery = {
   tokenEndpoint: "https://accounts.spotify.com/api/token",
 }
 
-export default function App() {
+export const SearchScreen = () => {
   const [results, setResults] = useState(undefined as any)
   const [request, response, promptAsync] = useAuthRequest(
     {

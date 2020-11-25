@@ -21,7 +21,7 @@ const discovery = {
   tokenEndpoint: "https://accounts.spotify.com/api/token",
 }
 
-export const LoginScreen = () => {
+export const LoginScreen = ({ navigation }) => {
   const [request, response, promptAsync] = useAuthRequest(
     {
       responseType: ResponseType.Token,
@@ -52,7 +52,7 @@ export const LoginScreen = () => {
         disabled={!request}
         title='Login'
         onPress={() => {
-          promptAsync()
+          promptAsync().then(navigation.navigate("Search"))
         }}
       />
     </SafeAreaView>
