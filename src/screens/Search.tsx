@@ -1,36 +1,18 @@
 import React, { useEffect, useState } from "react"
 import * as WebBrowser from "expo-web-browser"
-import {
-  makeRedirectUri,
-  ResponseType,
-  useAuthRequest,
-} from "expo-auth-session"
+import * as SecureStore from "expo-secure-store"
 import { StyleSheet, Text, Button, FlatList, SafeAreaView } from "react-native"
 
+import { MY_SECURE_AUTH_STATE_KEY } from "./Login"
 import { getNewReleases } from "../../index"
-
-import { credentials } from "../../credentials"
-
-const { clientId } = credentials
 
 WebBrowser.maybeCompleteAuthSession()
 
-// Endpoint
-const discovery = {
-  authorizationEndpoint: "https://accounts.spotify.com/authorize",
-  tokenEndpoint: "https://accounts.spotify.com/api/token",
-}
-
-type Props = {
-  route: {
-    params: {
-      authToken: string
-    }
-  }
-}
-
-export const SearchScreen = ({ route }: Props) => {
-  const { authToken } = route.params
+export const SearchScreen = () => {
+  const [authToken, setAuthToken] = useState("")
+  SecureStore.getItemAsync(MY_SECURE_AUTH_STATE_KEY).then(
+    (res) => res && setAuthToken(res)
+  )
   const [results, setResults] = useState(undefined as any)
 
   const fetchNewReleases = async () => {

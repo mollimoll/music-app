@@ -5,15 +5,16 @@ import {
   ResponseType,
   useAuthRequest,
 } from "expo-auth-session"
+import * as SecureStore from "expo-secure-store"
 import { StyleSheet, Button, SafeAreaView } from "react-native"
-
-import { getNewReleases } from "../../index"
 
 import { credentials } from "../../credentials"
 
 const { clientId } = credentials
 
 WebBrowser.maybeCompleteAuthSession()
+
+export const MY_SECURE_AUTH_STATE_KEY = "MySecureAuthStateKey"
 
 // Endpoint
 const discovery = {
@@ -39,11 +40,20 @@ export const LoginScreen = ({ navigation }) => {
     discovery
   )
 
+  console.log("response", response)
+
   useEffect(() => {
     if (response?.type === "success") {
       const { access_token } = response.params
       console.log("code", access_token)
-      navigation.navigate("Search", { authToken: access_token })
+
+      if (SecureStore.isAvailableAsync()) {
+        // Securely store the auth on your device
+        SecureStore.setItemAsync(
+          MY_SECURE_AUTH_STATE_KEY,
+          access_token
+        ).then(() => navigation.navigate("Search"))
+      }
     }
   }, [response])
 
