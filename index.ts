@@ -24,9 +24,7 @@ export const authToken = async () => {
 
 const getTrackIdsOfNewAlbums = async (country: string) => {
   const {
-    body: {
-      albums: { items },
-    },
+    albums: { items },
   } = await spotifyApi.getNewReleases({
     limit: 20,
     offset: 0,
@@ -35,9 +33,7 @@ const getTrackIdsOfNewAlbums = async (country: string) => {
 
   const albumIds = items.map((album) => album.id)
 
-  const {
-    body: { albums },
-  } = await spotifyApi.getAlbums(albumIds)
+  const { albums } = await spotifyApi.getAlbums(albumIds)
 
   const trackIds = albums
     .map((album) => album.tracks.items)
@@ -48,17 +44,15 @@ const getTrackIdsOfNewAlbums = async (country: string) => {
 }
 
 const getTracksWithAnalyses = async (trackIds: string[]) => {
-  const {
-    body: { tracks },
-  } = await spotifyApi.getTracks(trackIds.slice(0, 50))
+  const { tracks } = await spotifyApi.getTracks(trackIds.slice(0, 50))
 
-  const {
-    body: { audio_features: trackFeatures },
-  } = await spotifyApi.getAudioFeaturesForTracks(trackIds.slice(0, 50))
+  const { audio_features } = await spotifyApi.getAudioFeaturesForTracks(
+    trackIds.slice(0, 50)
+  )
 
   const tracksWithDetails = tracks.map(
     ({ album, available_markets, ...track }) => {
-      const features = trackFeatures.find(
+      const features = audio_features.find(
         (features) => features.id === track.id
       )
 
@@ -107,7 +101,7 @@ type getNewReleasesRequest = {
 
 export const getNewReleases = async (req: getNewReleasesRequest) => {
   spotifyApi.setAccessToken(req.auth_token)
-  console.log("credentials successful!!!", spotifyApi)
+  console.log("credentials successful!!!", req.auth_token)
 
   const {
     albums: { items },
@@ -147,18 +141,24 @@ type getSongsByBpmRequest = {
   auth_token: string
   query: {
     country: string
-    min: Number
-    max: Number
+    min: string
+    max: string
   }
 }
 
-const getSongsByBpm = async (req: getSongsByBpmRequest) => {
+export const getSongsByBpm = async (req: getSongsByBpmRequest) => {
   spotifyApi.setAccessToken(req.auth_token)
+  console.log("req", req)
 
   const trackIds = await getTrackIdsOfNewAlbums(req.query.country)
   const tracks = await getTracksWithAnalyses(trackIds)
 
-  const filteredTracks = getTracksByBpm(req.query.min, req.query.max, tracks)
+  const filteredTracks = getTracksByBpm(
+    parseInt(req.query.min),
+    parseInt(req.query.max),
+    tracks
+  )
+  console.log("lkajsdflkjasdf")
 
   return filteredTracks
 }

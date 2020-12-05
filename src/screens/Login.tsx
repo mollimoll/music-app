@@ -52,7 +52,7 @@ export const LoginScreen = ({ navigation }) => {
         SecureStore.setItemAsync(
           MY_SECURE_AUTH_STATE_KEY,
           access_token
-        ).then(() => navigation.navigate("Search"))
+        ).then(() => navigation.navigate("BPM Search"))
       }
     }
   }, [response])
