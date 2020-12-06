@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useMemo, useRef, useState } from "react"
 import {
   Animated,
   Dimensions,
@@ -27,21 +27,18 @@ export const SliderScreen = () => {
         }),
         onPanResponderRelease: (evt, gestureState) => {
           if (gestureState.dx > 120) {
-            Animated.spring(
-              pan, // Auto-multiplexed
-              {
-                toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy },
-                useNativeDriver: false,
-              }
-            ).start(() => {
+            Animated.spring(pan, {
+              toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy },
+              useNativeDriver: false,
+            }).start(() => {
               setCurrentIndex(currentIndex + 1)
               pan.setValue({ x: 0, y: 0 })
             })
           } else {
-            Animated.spring(
-              pan, // Auto-multiplexed
-              { toValue: { x: 0, y: 0 }, useNativeDriver: false } // Back to zero
-            ).start()
+            Animated.spring(pan, {
+              toValue: { x: 0, y: 0 },
+              useNativeDriver: false,
+            }).start()
           }
         },
       }),
@@ -58,20 +55,16 @@ export const SliderScreen = () => {
     transform: [{ rotate }, ...pan.getTranslateTransform()],
   }
 
-  const renderItems = () => {
-    const item = data[currentIndex]
-    const secondItem = data[currentIndex + 1]
+  const item = data[currentIndex]
+  const secondItem = data[currentIndex + 1]
 
-    return (
-      <>
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}></View>
+      <View style={styles.content}>
         {secondItem && (
           <Animated.View key={secondItem.id} style={styles.animated}>
-            <Image
-              style={styles.image}
-              source={{
-                uri: secondItem.uri,
-              }}
-            />
+            <Image style={styles.image} source={{ uri: secondItem.uri }} />
           </Animated.View>
         )}
         {item && (
@@ -80,22 +73,10 @@ export const SliderScreen = () => {
             key={item.id}
             style={[rotateAndTransform, styles.animated]}
           >
-            <Image
-              style={styles.image}
-              source={{
-                uri: item.uri,
-              }}
-            />
+            <Image style={styles.image} source={{ uri: item.uri }} />
           </Animated.View>
         )}
-      </>
-    )
-  }
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}></View>
-      <View style={styles.content}>{renderItems()}</View>
+      </View>
       <View style={styles.footer}></View>
     </SafeAreaView>
   )
