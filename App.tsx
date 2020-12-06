@@ -7,6 +7,7 @@ import { LoginScreen } from "./src/screens/Login"
 import { SearchScreen } from "./src/screens/Search"
 import { BpmSearchScreen } from "./src/screens/BpmSearch"
 import { SplashScreen } from "./src/screens/Splash"
+import { SliderScreen } from "./src/screens/Slider"
 
 const Tabs = createBottomTabNavigator()
 
@@ -26,6 +27,7 @@ const App = () => (
       <Tabs.Screen name='Login' component={LoginScreen} />
       <Tabs.Screen name='Search' component={SearchScreen} />
       <Tabs.Screen name='BPM Search' component={BpmSearchScreen} />
+      <Tabs.Screen name='Slider' component={SliderScreen} />
     </Tabs.Navigator>
   </NavigationContainer>
 )

@@ -18,7 +18,6 @@ export const authToken = async () => {
     encodeURIComponent(credentials.redirectUri)
 
   const auth = await fetch(url)
-  console.log("auth", auth)
   return auth
 }
 
@@ -69,7 +68,7 @@ const getTracksWithAnalyses = async (trackIds: string[]) => {
 
   if (trackIds[50]) {
     const additionalTracks = await getTracksWithAnalyses(trackIds.slice(50))
-    return [...tracksWithDetails, ...additionalTracks] // returns incorrectly
+    return [...tracksWithDetails, ...additionalTracks]
   } else {
     return tracksWithDetails
   }
@@ -101,7 +100,6 @@ type getNewReleasesRequest = {
 
 export const getNewReleases = async (req: getNewReleasesRequest) => {
   spotifyApi.setAccessToken(req.auth_token)
-  console.log("credentials successful!!!", req.auth_token)
 
   const {
     albums: { items },
@@ -148,7 +146,6 @@ type getSongsByBpmRequest = {
 
 export const getSongsByBpm = async (req: getSongsByBpmRequest) => {
   spotifyApi.setAccessToken(req.auth_token)
-  console.log("req", req)
 
   const trackIds = await getTrackIdsOfNewAlbums(req.query.country)
   const tracks = await getTracksWithAnalyses(trackIds)
@@ -158,7 +155,6 @@ export const getSongsByBpm = async (req: getSongsByBpmRequest) => {
     parseInt(req.query.max),
     tracks
   )
-  console.log("lkajsdflkjasdf")
 
   return filteredTracks
 }
