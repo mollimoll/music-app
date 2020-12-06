@@ -14,7 +14,7 @@ const Tabs = createBottomTabNavigator()
 const App = () => (
   <NavigationContainer>
     <Tabs.Navigator
-      initialRouteName='Login'
+      initialRouteName='Slider'
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
           const iconName = route.name === "Login" ? "ios-log-in" : "ios-search"

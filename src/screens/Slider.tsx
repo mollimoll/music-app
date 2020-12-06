@@ -58,40 +58,39 @@ export const SliderScreen = () => {
     transform: [{ rotate }, ...pan.getTranslateTransform()],
   }
 
-  const renderItems = () =>
-    data
-      .map((item, i) => {
-        if (i < currentIndex) {
-          return null
-        } else if (i === currentIndex) {
-          return (
-            <Animated.View
-              {...panResponder.panHandlers}
-              key={item.id}
-              style={[rotateAndTransform, styles.animated]}
-            >
-              <Image
-                style={styles.image}
-                source={{
-                  uri: item.uri,
-                }}
-              />
-            </Animated.View>
-          )
-        } else {
-          return (
-            <Animated.View key={item.id} style={styles.animated}>
-              <Image
-                style={styles.image}
-                source={{
-                  uri: item.uri,
-                }}
-              />
-            </Animated.View>
-          )
-        }
-      })
-      .reverse()
+  const renderItems = () => {
+    const item = data[currentIndex]
+    const secondItem = data[currentIndex + 1]
+
+    return (
+      <>
+        {secondItem && (
+          <Animated.View key={secondItem.id} style={styles.animated}>
+            <Image
+              style={styles.image}
+              source={{
+                uri: secondItem.uri,
+              }}
+            />
+          </Animated.View>
+        )}
+        {item && (
+          <Animated.View
+            {...panResponder.panHandlers}
+            key={item.id}
+            style={[rotateAndTransform, styles.animated]}
+          >
+            <Image
+              style={styles.image}
+              source={{
+                uri: item.uri,
+              }}
+            />
+          </Animated.View>
+        )}
+      </>
+    )
+  }
 
   return (
     <SafeAreaView style={styles.container}>
