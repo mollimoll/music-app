@@ -11,6 +11,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native"
+import { SliderScreen } from "./Slider"
 
 import { MY_SECURE_AUTH_STATE_KEY } from "./Login"
 import { getSongsByBpm } from "../../index"
@@ -38,60 +39,69 @@ export const BpmSearchScreen = () => {
         auth_token: authToken,
         query: { country: "us", min, max },
       })
+      console.log(songs[0].images[0].url)
       setResults(songs)
     }
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text>Max</Text>
-      <TextInput
-        style={{
-          height: 40,
-          width: "50%",
-          borderColor: "gray",
-          borderWidth: 1,
-        }}
-        clearTextOnFocus
-        keyboardType='number-pad'
-        placeholder={"0"}
-        onChangeText={(num: string) => setMax(num)}
-        value={max}
-        key='Max'
-      />
-      <Text>Min</Text>
-      <TextInput
-        style={{
-          height: 40,
-          width: "50%",
-          borderColor: "gray",
-          borderWidth: 1,
-        }}
-        clearTextOnFocus
-        keyboardType='number-pad'
-        placeholder={"0"}
-        onChangeText={(num: string) => setMin(num)}
-        value={min}
-        key='Min'
-      />
-      <Button
-        disabled={!authToken}
-        title='Fetch New Releases'
-        onPress={async () => await fetchByBpm()}
-      />
-      {results && (
-        <FlatList
-          data={results}
-          keyExtractor={(item) => item.name}
-          renderItem={({ item }) => (
-            <Text
-              key={item.name}
-              style={styles.item}
-            >{`${item.name} - ${item.artists[0].name} - ${item.tempo}`}</Text>
-          )}
-        />
+    <DismissKeyboard>
+      {results ? (
+        <SliderScreen data={results} />
+      ) : (
+        <SafeAreaView style={styles.container}>
+          <>
+            <Text>Max</Text>
+            <TextInput
+              style={{
+                height: 40,
+                width: "50%",
+                borderColor: "gray",
+                borderWidth: 1,
+              }}
+              clearTextOnFocus
+              keyboardType='number-pad'
+              placeholder={"0"}
+              onChangeText={(num: string) => setMax(num)}
+              value={max}
+              key='Max'
+            />
+            <Text>Min</Text>
+            <TextInput
+              style={{
+                height: 40,
+                width: "50%",
+                borderColor: "gray",
+                borderWidth: 1,
+              }}
+              clearTextOnFocus
+              keyboardType='number-pad'
+              placeholder={"0"}
+              onChangeText={(num: string) => setMin(num)}
+              value={min}
+              key='Min'
+            />
+            <Button
+              disabled={!authToken}
+              title='Fetch New Releases'
+              onPress={async () => await fetchByBpm()}
+            />
+            {results && (
+              <FlatList
+                data={results}
+                keyExtractor={(item) => item.name}
+                renderItem={({ item }) => (
+                  <Text
+                    key={item.name}
+                    style={styles.item}
+                  >{`${item.name} - ${item.artists[0].name} - ${item.tempo}`}</Text>
+                )}
+              />
+            )}
+          </>
+        </SafeAreaView>
       )}
-    </SafeAreaView>
+    </DismissKeyboard>
   )
 }
 

@@ -9,12 +9,12 @@ import {
   View,
 } from "react-native"
 
-import { data } from "../../album-data"
+// import { data } from "../../album-data"
 
 const SCREEN_HEIGHT = Dimensions.get("window").height
 const SCREEN_WIDTH = Dimensions.get("window").width
 
-export const SliderScreen = () => {
+export const SliderScreen = ({ data }: any) => {
   const pan = useRef(new Animated.ValueXY()).current
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -64,7 +64,10 @@ export const SliderScreen = () => {
       <View style={styles.content}>
         {secondItem && (
           <Animated.View key={secondItem.id} style={styles.animated}>
-            <Image style={styles.image} source={{ uri: secondItem.uri }} />
+            <Image
+              style={styles.image}
+              source={{ uri: secondItem.images[0].url }}
+            />
           </Animated.View>
         )}
         {item && (
@@ -73,7 +76,7 @@ export const SliderScreen = () => {
             key={item.id}
             style={[rotateAndTransform, styles.animated]}
           >
-            <Image style={styles.image} source={{ uri: item.uri }} />
+            <Image style={styles.image} source={{ uri: item.images[0].url }} />
           </Animated.View>
         )}
       </View>
