@@ -9,14 +9,16 @@ import {
   View,
 } from "react-native"
 
-// import { data } from "../../album-data"
-
 const SCREEN_HEIGHT = Dimensions.get("window").height
 const SCREEN_WIDTH = Dimensions.get("window").width
 
-export const SliderScreen = ({ data }: any) => {
+export const SliderScreen = ({ route }: any) => {
   const pan = useRef(new Animated.ValueXY()).current
   const [currentIndex, setCurrentIndex] = useState(0)
+
+  const { data } = route.params
+  const item = data[currentIndex]
+  const secondItem = data[currentIndex + 1]
 
   const panResponder = useMemo(
     () =>
@@ -29,6 +31,14 @@ export const SliderScreen = ({ data }: any) => {
           if (gestureState.dx > 120) {
             Animated.spring(pan, {
               toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy },
+              useNativeDriver: false,
+            }).start(() => {
+              setCurrentIndex(currentIndex + 1)
+              pan.setValue({ x: 0, y: 0 })
+            })
+          } else if (gestureState.dx < -120) {
+            Animated.spring(pan, {
+              toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy },
               useNativeDriver: false,
             }).start(() => {
               setCurrentIndex(currentIndex + 1)
@@ -54,9 +64,6 @@ export const SliderScreen = ({ data }: any) => {
   const rotateAndTransform = {
     transform: [{ rotate }, ...pan.getTranslateTransform()],
   }
-
-  const item = data[currentIndex]
-  const secondItem = data[currentIndex + 1]
 
   return (
     <SafeAreaView style={styles.container}>

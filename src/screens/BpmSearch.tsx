@@ -24,7 +24,7 @@ const DismissKeyboard = ({ children }) => (
   </TouchableWithoutFeedback>
 )
 
-export const BpmSearchScreen = () => {
+export const BpmSearchScreen = ({ navigation }: any) => {
   const [results, setResults] = useState(undefined as any)
   const [min, setMin] = useState("")
   const [max, setMax] = useState("")
@@ -39,8 +39,7 @@ export const BpmSearchScreen = () => {
         auth_token: authToken,
         query: { country: "us", min, max },
       })
-      console.log(songs[0].images[0].url)
-      setResults(songs)
+      navigation.navigate("Slider", { data: songs })
     }
   }
 
