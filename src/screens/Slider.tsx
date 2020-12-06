@@ -67,7 +67,6 @@ export const SliderScreen = ({ route }: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}></View>
       <View style={styles.content}>
         {secondItem && (
           <Animated.View key={secondItem.id} style={styles.animated}>
@@ -84,7 +83,6 @@ export const SliderScreen = ({ route }: any) => {
           </Animated.View>
         )}
       </View>
-      <View style={styles.footer}></View>
     </SafeAreaView>
   )
 }
@@ -93,9 +91,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
     flex: 1,
-  },
-  header: {
-    height: 60,
   },
   content: {
     flex: 1,
@@ -106,8 +101,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: SCREEN_HEIGHT - 200,
     width: SCREEN_WIDTH,
-  },
-  footer: {
-    height: 60,
   },
 })
