@@ -40,12 +40,9 @@ export const LoginScreen = ({ navigation }) => {
     discovery
   )
 
-  console.log("response", response)
-
   useEffect(() => {
     if (response?.type === "success") {
       const { access_token } = response.params
-      console.log("code", access_token)
 
       if (SecureStore.isAvailableAsync()) {
         // Securely store the auth on your device
