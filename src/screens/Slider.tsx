@@ -2,12 +2,12 @@ import React, { useMemo, useRef, useState } from "react"
 import {
   Animated,
   Dimensions,
-  Image,
   PanResponder,
   SafeAreaView,
   StyleSheet,
   View,
 } from "react-native"
+import { SongCard } from "../components/SongCard"
 
 const SCREEN_HEIGHT = Dimensions.get("window").height
 const SCREEN_WIDTH = Dimensions.get("window").width
@@ -71,10 +71,7 @@ export const SliderScreen = ({ route }: any) => {
       <View style={styles.content}>
         {secondItem && (
           <Animated.View key={secondItem.id} style={styles.animated}>
-            <Image
-              style={styles.image}
-              source={{ uri: secondItem.images[0].url }}
-            />
+            <SongCard song={secondItem} />
           </Animated.View>
         )}
         {item && (
@@ -83,7 +80,7 @@ export const SliderScreen = ({ route }: any) => {
             key={item.id}
             style={[rotateAndTransform, styles.animated]}
           >
-            <Image style={styles.image} source={{ uri: item.images[0].url }} />
+            <SongCard song={item} />
           </Animated.View>
         )}
       </View>
@@ -109,10 +106,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: SCREEN_HEIGHT - 200,
     width: SCREEN_WIDTH,
-  },
-  image: {
-    height: SCREEN_WIDTH - 20,
-    width: SCREEN_WIDTH - 20,
   },
   footer: {
     height: 60,
