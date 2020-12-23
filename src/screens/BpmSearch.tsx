@@ -50,21 +50,6 @@ export const BpmSearchScreen = ({ navigation }: any) => {
       ) : (
         <SafeAreaView style={styles.container}>
           <>
-            <Text>Max</Text>
-            <TextInput
-              style={{
-                height: 40,
-                width: "50%",
-                borderColor: "gray",
-                borderWidth: 1,
-              }}
-              clearTextOnFocus
-              keyboardType='number-pad'
-              placeholder={"0"}
-              onChangeText={(num: string) => setMax(num)}
-              value={max}
-              key='Max'
-            />
             <Text>Min</Text>
             <TextInput
               style={{
@@ -79,6 +64,21 @@ export const BpmSearchScreen = ({ navigation }: any) => {
               onChangeText={(num: string) => setMin(num)}
               value={min}
               key='Min'
+            />
+            <Text>Max</Text>
+            <TextInput
+              style={{
+                height: 40,
+                width: "50%",
+                borderColor: "gray",
+                borderWidth: 1,
+              }}
+              clearTextOnFocus
+              keyboardType='number-pad'
+              placeholder={"0"}
+              onChangeText={(num: string) => setMax(num)}
+              value={max}
+              key='Max'
             />
             <Button
               disabled={!authToken}
