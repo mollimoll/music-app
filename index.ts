@@ -1,13 +1,13 @@
-const SpotifyWebApi = require("spotify-web-api-js")
+import SpotifyWebApi from "spotify-web-api-js"
 
 import { credentials } from "./credentials"
 
 // TODO: Research: How does this persist across sessions when hosted?
 //   e.g. Will the second visitor be using the auth of the first?
-var spotifyApi = new SpotifyWebApi()
+const spotifyApi = new SpotifyWebApi()
 
 export const authToken = async () => {
-  var scopes = "user-read-private user-read-email"
+  const scopes = "user-read-private user-read-email"
   const url =
     "https://accounts.spotify.com/authorize" +
     "?response_type=code" +
@@ -52,7 +52,7 @@ const getTracksWithAnalyses = async (trackIds: string[]) => {
   const tracksWithDetails = tracks.map(
     ({ album, available_markets, ...track }) => {
       const features = audio_features.find(
-        (features) => features.id === track.id
+        (features) => features && features.id === track.id
       )
 
       if (features) {
@@ -74,22 +74,8 @@ const getTracksWithAnalyses = async (trackIds: string[]) => {
   }
 }
 
-const getTracksByBpm = (min: Number, max: Number, tracks) =>
-  tracks.filter((track) => track.tempo >= min && track.tempo <= max)
-
-type searchForArtistRequest = {
-  auth_token: string
-  query: {
-    query: String
-  }
-}
-
-const searchForArtist = async (req: searchForArtistRequest) => {
-  spotifyApi.setAccessToken(req.auth_token)
-
-  const artists = spotifyApi.searchArtists(req.query.query)
-  return artists.body
-}
+const getTracksByBpm = (min: number, max: number, tracks) =>
+  tracks.filter((track) => track && track.tempo >= min && track.tempo <= max)
 
 type getNewReleasesRequest = {
   auth_token: string
@@ -110,29 +96,6 @@ export const getNewReleases = async (req: getNewReleasesRequest) => {
   })
 
   return items
-}
-
-/**
- * New Song - Gets a list of up to 50 new releases
- * @param country A string of the country you want list from e.g. 'us'
- * @returns A list of up to 50 of the newly released songs for that country,
- * including the analysis (e.g. bpm), but excluding album and markets
- */
-
-type getNewSongsRequest = {
-  auth_token: string
-  query: {
-    country: string
-  }
-}
-
-const getNewSongs = async (req: getNewSongsRequest) => {
-  spotifyApi.setAccessToken(req.auth_token)
-
-  const trackIds = await getTrackIdsOfNewAlbums(req.query.country)
-  const tracks = await getTracksWithAnalyses(trackIds)
-
-  return tracks
 }
 
 type getSongsByBpmRequest = {

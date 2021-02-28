@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from "react"
-import * as WebBrowser from "expo-web-browser"
 import * as SecureStore from "expo-secure-store"
+import * as WebBrowser from "expo-web-browser"
+import React, { FunctionComponent, useState } from "react"
 import {
-  StyleSheet,
-  Text,
   Button,
   FlatList,
+  Keyboard,
   SafeAreaView,
+  StyleSheet,
+  Text,
   TextInput,
   TouchableWithoutFeedback,
-  Keyboard,
 } from "react-native"
-import { SliderScreen } from "./Slider"
-
-import { MY_SECURE_AUTH_STATE_KEY } from "./Login"
 import { getSongsByBpm } from "../../index"
+import { MY_SECURE_AUTH_STATE_KEY } from "./Login"
+import { SliderScreen } from "./Slider"
 
 WebBrowser.maybeCompleteAuthSession()
 
-const DismissKeyboard = ({ children }) => (
+const DismissKeyboard: FunctionComponent = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
   </TouchableWithoutFeedback>
@@ -85,7 +84,7 @@ export const BpmSearchScreen = ({ navigation }: any) => {
               title='Fetch New Releases'
               onPress={async () => await fetchByBpm()}
             />
-            {results && (
+            {results ? (
               <FlatList
                 data={results}
                 keyExtractor={(item) => item.name}
@@ -96,7 +95,7 @@ export const BpmSearchScreen = ({ navigation }: any) => {
                   >{`${item.name} - ${item.artists[0].name} - ${item.tempo}`}</Text>
                 )}
               />
-            )}
+            ) : null}
           </>
         </SafeAreaView>
       )}

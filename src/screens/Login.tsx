@@ -34,7 +34,7 @@ export const LoginScreen = ({ navigation }) => {
       // For usage in managed apps using the proxy
       redirectUri: makeRedirectUri({
         // For usage in bare and standalone
-        native: "exp://192.168.2.8:19000",
+        native: "exp://192.168.1.105:19000",
       }),
     },
     discovery

@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react"
-import * as WebBrowser from "expo-web-browser"
 import * as SecureStore from "expo-secure-store"
-import { StyleSheet, Text, Button, FlatList, SafeAreaView } from "react-native"
-
-import { MY_SECURE_AUTH_STATE_KEY } from "./Login"
+import * as WebBrowser from "expo-web-browser"
+import React, { useState } from "react"
+import { Button, FlatList, SafeAreaView, StyleSheet, Text } from "react-native"
 import { getNewReleases } from "../../index"
+import { MY_SECURE_AUTH_STATE_KEY } from "./Login"
 
 WebBrowser.maybeCompleteAuthSession()
 
@@ -32,7 +31,7 @@ export const SearchScreen = () => {
         title='Fetch New Releases'
         onPress={async () => await fetchNewReleases()}
       />
-      {results && (
+      {results ? (
         <FlatList
           data={results}
           renderItem={({ item }) => (
@@ -43,7 +42,7 @@ export const SearchScreen = () => {
             </>
           )}
         />
-      )}
+      ) : null}
     </SafeAreaView>
   )
 }
